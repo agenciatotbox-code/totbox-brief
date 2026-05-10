@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brief de Campaña — Totbox Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#ff8b00;--orange-light:#fff3e0;--orange-mid:#ffe0b2;
+  --blue:#384c67;--blue-light:#eef1f5;--blue-mid:#c8d2df;
+  --cream:#f2ebdd;--white:#fff;--text:#1e2633;--text2:#4a5568;--text3:#8a94a0;
+  --success:#1a8a4a;--success-bg:#e8f7ee;--warn:#a06010;--warn-bg:#fef3e2;
+  --danger:#c0280a;--danger-bg:#fdecea;
+  --mono:"DM Mono",monospace;--sans:"DM Sans",sans-serif;
+  --r:10px;--rl:14px;
+}
+body{font-family:var(--sans);background:var(--cream);color:var(--text);min-height:100vh}
+.app{display:flex;min-height:100vh}
+.sidebar{width:230px;flex-shrink:0;background:var(--blue);position:fixed;top:0;left:0;height:100vh;display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.main{margin-left:230px;flex:1;padding:2rem 3rem 4rem}
+.inner{max-width:980px}
+.s-logo{padding:1.25rem 1rem .9rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.s-logo img{width:46px;height:46px;border-radius:9px;object-fit:cover;margin-bottom:7px;display:block}
+.s-name{font-size:14px;font-weight:700;color:#fff}
+.s-tag{font-size:11px;color:rgba(255,255,255,.4);margin-top:1px}
+.s-nav{padding:.85rem .5rem;flex:1}
+.s-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.1em;padding:0 .55rem;margin:.8rem 0 .35rem}
+.s-lbl:first-child{margin-top:0}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:var(--r);cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);border:none;background:none;width:100%;text-align:left;font-family:var(--sans);transition:all .15s}
+.ni:hover{background:rgba(255,255,255,.08);color:#fff}
+.ni.active{background:var(--orange);color:#fff}
+.nd{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+.ni.active .nd{background:#fff}
+.s-foot{padding:.9rem 1rem;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.28);line-height:1.6;text-align:center}
+.sh{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin:1.75rem 0 .65rem;padding-bottom:5px;border-bottom:1px solid var(--blue-mid)}
+.field{margin-bottom:1rem}
+.field label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
+.fdesc{font-size:12px;color:var(--text3);margin-bottom:5px;line-height:1.5;font-style:italic}
+.hint{font-weight:400;font-size:12px;color:var(--text3)}
+.req{color:var(--orange);margin-left:2px}
+.counter{font-size:12px;font-weight:600}
+.counter.ok{color:var(--success)}.counter.warn{color:var(--warn)}.counter.over{color:var(--danger)}
+input[type=text],textarea,select{width:100%;font-family:var(--sans);font-size:14px;color:var(--text);background:var(--white);border:1.5px solid var(--blue-mid);border-radius:var(--r);padding:9px 12px;outline:none;transition:border-color .15s,box-shadow .15s}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-light)}
+input.invalid,textarea.invalid,select.invalid{border-color:var(--danger)!important;box-shadow:0 0 0 3px var(--danger-bg)!important}
+.ferr{font-size:11px;color:var(--danger);margin-top:3px;display:none}
+.ferr.show{display:block}
+textarea{resize:vertical;line-height:1.6}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e737c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:700px){.fr2,.fr3{grid-template-columns:1fr}.sidebar{display:none}.main{margin-left:0;padding:1.25rem}}
+.pg{display:none}.pg.show{display:block}
+.ftabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap}
+.ftab{padding:7px 15px;font-size:13px;font-weight:500;font-family:var(--sans);border:1.5px solid var(--blue-mid);border-radius:20px;cursor:pointer;background:var(--white);color:var(--text2);transition:all .15s}
+.ftab:hover{border-color:var(--blue);color:var(--blue)}
+.ftab.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.fsec{display:none}.fsec.show{display:block}
+.ad-block{background:var(--white);border:1.5px solid var(--blue-mid);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(56,76,103,.05)}
+.ad-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem}
+.ad-num{font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.06em}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;font-family:var(--sans);display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:6px;transition:all .15s}
+.del-btn:hover{color:var(--danger);background:var(--danger-bg)}
+.naming{background:var(--blue);border-radius:var(--r);padding:9px 13px;margin-bottom:.9rem;display:flex;align-items:center;gap:10px}
+.n-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);white-space:nowrap;text-transform:uppercase;letter-spacing:.06em}
+.n-val{font-size:13px;font-weight:500;font-family:var(--mono);color:var(--orange);word-break:break-all}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:.75rem}
+.slot{background:var(--blue-light);border:1.5px dashed var(--blue-mid);border-radius:var(--r);padding:.85rem 1rem}
+.slot-lbl{font-size:12px;font-weight:600;color:var(--blue);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.sbadge{font-size:10px;padding:2px 7px;border-radius:20px;background:var(--blue);color:#fff;font-weight:600}
+.slot input,.slot-full input{background:var(--white)}
+.slot-full{background:var(--blue-light);border:1.5px dashed var(--blue-mid);border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.75rem}
+.url-hint{font-size:11px;color:var(--text3);margin-bottom:6px;line-height:1.5}
+.rm-btn{background:none;border:none;cursor:pointer;color:var(--text3);padding:2px 4px;font-size:14px;line-height:1;border-radius:4px;transition:all .15s;flex-shrink:0}
+.rm-btn:hover{color:var(--danger);background:var(--danger-bg)}
+.add-url{font-size:12px;color:var(--orange);background:none;border:none;cursor:pointer;padding:0;font-family:var(--sans);font-weight:600;display:inline-flex;align-items:center;gap:4px;margin-top:3px}
+.add-url:hover{text-decoration:underline}
+.add-ad{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;font-family:var(--sans);color:var(--orange);background:var(--orange-light);border:1.5px dashed var(--orange);border-radius:var(--r);padding:10px 16px;cursor:pointer;margin-bottom:1.25rem;width:100%;justify-content:center;transition:all .15s}
+.add-ad:hover{background:var(--orange-mid)}
+.car-card{background:var(--cream);border:1px solid var(--blue-mid);border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.75rem}
+.car-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-size:12px;font-weight:600;color:var(--blue)}
+.sl-block{background:var(--cream);border:1px solid var(--blue-mid);border-radius:var(--r);padding:1rem;margin-bottom:.75rem}
+.meta-layout{display:grid;grid-template-columns:1fr 300px;gap:1.75rem;align-items:start}
+.g-layout{display:grid;grid-template-columns:1fr 330px;gap:1.75rem;align-items:start}
+.mockup-col{position:sticky;top:1.5rem}
+@media(max-width:920px){.meta-layout,.g-layout{grid-template-columns:1fr}.mockup-col{position:static}}
+/* META MOCKUP */
+.mk-wrap{background:var(--white);border:1.5px solid var(--blue-mid);border-radius:var(--rl);overflow:hidden;box-shadow:0 2px 8px rgba(56,76,103,.07)}
+.mk-hdr{padding:.65rem .9rem;border-bottom:1px solid var(--blue-mid);display:flex;align-items:center;justify-content:space-between}
+.mk-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em}
+.tog-row{display:flex;gap:4px}
+.tog{font-size:11px;font-weight:600;font-family:var(--sans);padding:4px 9px;border-radius:20px;border:1px solid var(--blue-mid);background:var(--white);color:var(--text2);cursor:pointer;transition:all .15s}
+.tog.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tog.sm{font-size:10px;padding:3px 7px}
+.mk-note{font-size:11px;color:var(--text3);padding:.5rem .9rem;border-top:1px solid var(--blue-mid);text-align:center;line-height:1.5}
+/* INSTAGRAM MOCKUP */
+.ig-wrap{padding:.7rem;background:#fafafa}
+.ig-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.55rem}
+.ig-top-left{display:flex;align-items:center;gap:8px}
+.ig-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#c13584);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;border:1.5px solid #fff;box-shadow:0 0 0 1.5px var(--orange)}
+.ig-un{font-size:12px;font-weight:600;color:#000}
+.ig-sp{font-size:10px;color:#8e8e8e}
+.ig-more{font-size:18px;color:#8e8e8e;line-height:1}
+.img-box{overflow:hidden;position:relative;width:100%}
+.img-box.sq{padding-top:100%}.img-box.st{padding-top:177%}
+.img-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;background:linear-gradient(135deg,#e8edf2,#c8d2df)}
+.img-lbl{font-size:11px;color:var(--text3);font-weight:500}
+.img-dim{font-size:10px;color:#aab}
+.ig-actions{display:flex;align-items:center;gap:12px;padding:.45rem .1rem;margin-bottom:.2rem}
+.ig-act-icon{font-size:20px;line-height:1;cursor:pointer}
+.ig-act-save{margin-left:auto;font-size:20px;line-height:1}
+.ig-cta-bar{background:var(--orange);border-radius:4px;padding:6px 10px;text-align:center;margin-bottom:.4rem}
+.ig-cta-bar span{font-size:12px;font-weight:700;color:#fff}
+.ig-cap{font-size:12px;color:#000;line-height:1.5;padding:0 .1rem}
+.ig-cap strong{font-weight:700}
+.ig-sp-tag{font-size:10px;color:#8e8e8e;display:flex;align-items:center;gap:3px;margin-bottom:3px}
+.ph{color:#aaa;font-style:italic}
+/* FACEBOOK MOCKUP */
+.fb-wrap{padding:.7rem;background:#fff}
+.fb-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:.55rem}
+.fb-av{width:36px;height:36px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.fb-meta-block{flex:1}
+.fb-nm{font-size:13px;font-weight:700;color:#050505}
+.fb-sp{font-size:11px;color:#65676b;display:flex;align-items:center;gap:3px}
+.fb-primary{font-size:13px;color:#050505;line-height:1.55;margin-bottom:.55rem;min-height:17px}
+.fb-bot{background:#f0f2f5;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ddd}
+.fb-bot-t{flex:1}
+.fb-url{font-size:10px;color:#65676b;text-transform:uppercase;margin-bottom:2px}
+.fb-hl{font-size:14px;font-weight:700;color:#050505;min-height:18px}
+.fb-cta-btn{background:#e4e6ea;color:#050505;font-size:12px;font-weight:700;padding:7px 12px;border-radius:6px;white-space:nowrap;margin-left:10px;cursor:pointer}
+.fb-actions{display:flex;border-top:1px solid #ddd;margin-top:.4rem;padding-top:.4rem;gap:0}
+.fb-act{flex:1;text-align:center;font-size:12px;font-weight:600;color:#65676b;padding:4px 0}
+/* GOOGLE MOCKUP */
+.gm-wrap{background:var(--white);border:1.5px solid var(--blue-mid);border-radius:var(--rl);padding:1rem 1.1rem;box-shadow:0 2px 8px rgba(56,76,103,.07)}
+.gm-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.8rem}
+.gm-sbar{background:#f5f5f6;border:1px solid #e0e0e0;border-radius:22px;padding:6px 12px;font-size:12px;color:var(--text3);margin-bottom:.8rem;display:flex;align-items:center;gap:6px}
+.gm-ad{border:1px solid #e0e0e0;border-radius:7px;padding:10px 12px}
+.gm-label{font-size:10px;font-weight:700;color:#137333;background:#e6f4ea;padding:1px 6px;border-radius:3px;display:inline-block;margin-bottom:5px}
+.gm-url{font-size:12px;color:#202124;margin-bottom:3px}
+.gm-hl{font-size:16px;font-weight:400;color:#1a0dab;line-height:1.35;margin-bottom:4px;min-height:22px}
+.gm-desc{font-size:12px;color:#4d5156;line-height:1.5;min-height:18px}
+.gm-note{font-size:11px;color:var(--text3);margin-top:.6rem;line-height:1.5;text-align:center}
+/* ACTIONS */
+.act-row{display:flex;gap:8px;margin-top:2rem;flex-wrap:wrap}
+.btn-p{padding:10px 20px;font-size:14px;font-weight:600;font-family:var(--sans);border-radius:var(--r);border:none;background:var(--orange);color:#fff;cursor:pointer}
+.btn-p:hover{opacity:.88}
+.btn-s{padding:10px 20px;font-size:14px;font-weight:500;font-family:var(--sans);border-radius:var(--r);border:1.5px solid var(--blue-mid);background:var(--white);color:var(--blue);cursor:pointer}
+.btn-s:hover{border-color:var(--blue);background:var(--blue-light)}
+.btn-b{padding:10px 20px;font-size:14px;font-weight:600;font-family:var(--sans);border-radius:var(--r);border:none;background:var(--blue);color:#fff;cursor:pointer}
+.btn-b:hover{opacity:.88}
+.sum-box{background:var(--white);border:1.5px solid var(--blue-mid);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-top:1.5rem;display:none}
+.sum-box.show{display:block}
+.sum-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem}
+.sum-title{font-size:13px;font-weight:600;color:var(--blue)}
+.copy-btn{font-size:12px;font-weight:600;font-family:var(--sans);color:var(--orange);background:var(--orange-light);border:none;border-radius:6px;padding:5px 12px;cursor:pointer}
+.copy-toast{display:none;font-size:12px;color:var(--success);font-weight:600}
+.sum-pre{font-size:12px;font-family:var(--mono);white-space:pre-wrap;color:var(--text);line-height:1.7}
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--blue);color:#fff;padding:12px 20px;border-radius:var(--r);font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);display:none;z-index:999;max-width:320px}
+.toast.show{display:block}
+.toast.ok{background:var(--success)}.toast.err{background:var(--danger)}
+.divider{height:1px;background:var(--blue-mid);margin:1.5rem 0}
+.ph-plat{display:flex;align-items:center;gap:11px;margin-bottom:1.5rem}
+.plat-badge{width:37px;height:37px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.plat-meta{background:#1877f2}.plat-g{background:#fff;border:1px solid #e0e0e0}
+.plat-title{font-size:19px;font-weight:700;color:var(--blue);letter-spacing:-.3px}
+.plat-sub{font-size:13px;color:var(--text2);margin-top:1px}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="s-logo">
+    <div style="width:46px;height:46px;border-radius:9px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;margin-bottom:7px">T</div>
+    <div class="s-name">Totbox Agency</div>
+    <div class="s-tag">Brief de Campaña Digital</div>
+  </div>
+  <nav class="s-nav">
+    <div class="s-lbl">Plataformas</div>
+    <button class="ni active" onclick="switchPlat('meta',this)"><span class="nd"></span>Meta Ads</button>
+    <button class="ni" onclick="switchPlat('google',this)"><span class="nd"></span>Google Search Ads</button>
+    <div class="s-lbl">Acciones</div>
+    <button class="ni" onclick="genSummary()"><span class="nd"></span>Generar resumen</button>
+    <button class="ni" onclick="sendEmail()"><span class="nd"></span>Enviar brief</button>
+    <button class="ni" onclick="clearAll()"><span class="nd"></span>Limpiar formulario</button>
+  </nav>
+  <div class="s-foot">© 2026 Totbox Agency<br>Todos los derechos reservados</div>
+</aside>
+
+<main class="main">
+<div class="inner">
+  <div class="sh" style="margin-top:0">Información general</div>
+  <div class="fr2">
+    <div class="field">
+      <label>Nombre del anunciante <span class="req">*</span></label>
+      <input type="text" id="client-name" placeholder="Ej: Nike" oninput="updateNaming();updateAvatars()" data-req="1">
+      <div class="ferr" id="err-client-name">Este campo es obligatorio.</div>
+    </div>
+    <div class="field">
+      <label>Campaña / Proyecto</label>
+      <input type="text" id="campaign-name" placeholder="Ej: Lanzamiento Q3">
+    </div>
+  </div>
+  <div class="fr2">
+    <div class="field">
+      <label>Objetivo de campaña</label>
+      <select id="campaign-obj" onchange="updateNaming()">
+        <option value="">Seleccionar...</option>
+        <option value="Conv">Conversión</option>
+        <option value="Traf">Tráfico</option>
+        <option value="Aware">Awareness</option>
+        <option value="Lead">Generación de leads</option>
+        <option value="Engagement">Engagement</option>
+        <option value="App">Instalación de app</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>URL destino (Landing)</label>
+      <input type="text" id="landing-url" placeholder="https://..." oninput="updateMkUrl()">
+    </div>
+  </div>
+
+  <!-- META PAGE -->
+  <div class="pg show" id="pg-meta">
+    <div class="ph-plat">
+      <div class="plat-badge plat-meta"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
+      <div><div class="plat-title">Meta Ads</div><div class="plat-sub">Facebook e Instagram — Brief de creatividades</div></div>
+    </div>
+    <div class="sh" style="margin-top:0">Tipo de anuncio</div>
+    <div class="ftabs">
+      <div class="ftab active" data-fmt="static">Estático (Feed + Stories)</div>
+      <div class="ftab" data-fmt="video">Video (Feed + Stories)</div>
+      <div class="ftab" data-fmt="carousel">Carrusel</div>
+      <div class="ftab" data-fmt="collection">Collection</div>
+    </div>
+
+    <!-- STATIC -->
+    <div class="fsec show" id="fsec-static">
+      <div class="meta-layout">
+        <div><div id="static-ads"></div><button class="add-ad" onclick="addMetaAd('static')">+ Agregar anuncio estático</button></div>
+        <div class="mockup-col">
+          <div class="mk-wrap">
+            <div class="mk-hdr"><span class="mk-title">Vista previa</span>
+              <div class="tog-row">
+                <button class="tog active" onclick="setPlatTog('static','ig',this)">Instagram</button>
+                <button class="tog" onclick="setPlatTog('static','fb',this)">Facebook</button>
+              </div>
+            </div>
+            <div class="tog-row" style="padding:.45rem .7rem;gap:4px;border-bottom:1px solid var(--blue-mid)">
+              <button class="tog sm active" onclick="setSizeTog('static','sq',this)">1:1 Feed</button>
+              <button class="tog sm" onclick="setSizeTog('static','st',this)">9:16 Stories</button>
+            </div>
+            <div id="mk-static-ig">
+              <div class="ig-wrap">
+                <div class="ig-top">
+                  <div class="ig-top-left">
+                    <div class="ig-av" id="ig-av-static">T</div>
+                    <div><div class="ig-un" id="ig-un-static">anunciante</div><div class="ig-sp-tag">Patrocinado</div></div>
+                  </div>
+                  <div class="ig-more">···</div>
+                </div>
+                <div class="img-box sq" id="igimg-static"><div class="img-inner"><span style="font-size:22px">🖼️</span><span class="img-lbl">Imagen cuadrada</span><span class="img-dim">1080 × 1080 px</span></div></div>
+                <div class="ig-actions">
+                  <span class="ig-act-icon">🤍</span>
+                  <span class="ig-act-icon">💬</span>
+                  <span class="ig-act-icon">📤</span>
+                  <span class="ig-act-save">🔖</span>
+                </div>
+                <div class="ig-cta-bar" id="ig-cta-static"><span>Más información</span></div>
+                <div class="ig-cap"><strong id="ig-capun-static">anunciante</strong> <span id="ig-primary-static" class="ph">El texto principal aparecerá aquí...</span></div>
+                <div style="font-size:12px;font-weight:600;color:var(--text);padding:.3rem .1rem" id="ig-hl-static"><span class="ph" style="font-size:11px;font-weight:400">Headline...</span></div>
+              </div>
+            </div>
+            <div id="mk-static-fb" style="display:none">
+              <div class="fb-wrap">
+                <div class="fb-top">
+                  <div class="fb-av" id="fb-av-static">T</div>
+                  <div class="fb-meta-block">
+                    <div class="fb-nm" id="fb-nm-static">Anunciante</div>
+                    <div class="fb-sp">Patrocinado · 🌐</div>
+                  </div>
+                </div>
+                <div class="fb-primary" id="fb-primary-static"><span class="ph">El texto principal aparecerá aquí...</span></div>
+                <div class="img-box sq" id="fbimg-static"><div class="img-inner"><span style="font-size:22px">🖼️</span><span class="img-lbl">Imagen cuadrada</span><span class="img-dim">1080 × 1080 px</span></div></div>
+                <div class="fb-bot">
+                  <div class="fb-bot-t">
+                    <div class="fb-url" id="fb-url-static">TUSITIO.COM</div>
+                    <div class="fb-hl" id="fb-hl-static"><span class="ph">Headline...</span></div>
+                  </div>
+                  <div class="fb-cta-btn" id="fb-cta-static">Más información</div>
+                </div>
+                <div class="fb-actions">
+                  <div class="fb-act">👍 Me gusta</div>
+                  <div class="fb-act">💬 Comentar</div>
+                  <div class="fb-act">↗ Compartir</div>
+                </div>
+              </div>
+            </div>
+            <div class="mk-note">Vista previa aproximada. Meta ajusta el formato según el dispositivo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="fsec" id="fsec-video">
+      <div class="meta-layout">
+        <div><div id="video-ads"></div><button class="add-ad" onclick="addMetaAd('video')">+ Agregar anuncio de video</button></div>
+        <div class="mockup-col">
+          <div class="mk-wrap">
+            <div class="mk-hdr"><span class="mk-title">Vista previa</span>
+              <div class="tog-row">
+                <button class="tog active" onclick="setPlatTog('video','ig',this)">Instagram</button>
+                <button class="tog" onclick="setPlatTog('video','fb',this)">Facebook</button>
+              </div>
+            </div>
+            <div class="tog-row" style="padding:.45rem .7rem;gap:4px;border-bottom:1px solid var(--blue-mid)">
+              <button class="tog sm active" onclick="setSizeTog('video','sq',this)">1:1 Feed</button>
+              <button class="tog sm" onclick="setSizeTog('video','st',this)">9:16 Stories</button>
+            </div>
+            <div id="mk-video-ig">
+              <div class="ig-wrap">
+                <div class="ig-top">
+                  <div class="ig-top-left">
+                    <div class="ig-av" id="ig-av-video">T</div>
+                    <div><div class="ig-un" id="ig-un-video">anunciante</div><div class="ig-sp-tag">Patrocinado</div></div>
+                  </div>
+                  <div class="ig-more">···</div>
+                </div>
+                <div class="img-box sq" id="igimg-video"><div class="img-inner"><span style="font-size:22px">▶️</span><span class="img-lbl">Video cuadrado</span><span class="img-dim">1080 × 1080 px</span></div></div>
+                <div class="ig-actions">
+                  <span class="ig-act-icon">🤍</span><span class="ig-act-icon">💬</span><span class="ig-act-icon">📤</span>
+                  <span class="ig-act-save">🔖</span>
+                </div>
+                <div class="ig-cta-bar" id="ig-cta-video"><span>Más información</span></div>
+                <div class="ig-cap"><strong id="ig-capun-video">anunciante</strong> <span id="ig-primary-video" class="ph">El texto principal aparecerá aquí...</span></div>
+                <div style="font-size:12px;font-weight:600;color:var(--text);padding:.3rem .1rem" id="ig-hl-video"><span class="ph" style="font-size:11px;font-weight:400">Headline...</span></div>
+              </div>
+            </div>
+            <div id="mk-video-fb" style="display:none">
+              <div class="fb-wrap">
+                <div class="fb-top">
+                  <div class="fb-av" id="fb-av-video">T</div>
+                  <div class="fb-meta-block"><div class="fb-nm" id="fb-nm-video">Anunciante</div><div class="fb-sp">Patrocinado · 🌐</div></div>
+                </div>
+                <div class="fb-primary" id="fb-primary-video"><span class="ph">El texto principal aparecerá aquí...</span></div>
+                <div class="img-box sq" id="fbimg-video"><div class="img-inner"><span style="font-size:22px">▶️</span><span class="img-lbl">Video cuadrado</span><span class="img-dim">1080 × 1080 px</span></div></div>
+                <div class="fb-bot">
+                  <div class="fb-bot-t"><div class="fb-hl" id="fb-hl-video"><span class="ph">Headline...</span></div></div>
+                  <div class="fb-cta-btn" id="fb-cta-video">Más información</div>
+                </div>
+                <div class="fb-actions"><div class="fb-act">👍 Me gusta</div><div class="fb-act">💬 Comentar</div><div class="fb-act">↗ Compartir</div></div>
+              </div>
+            </div>
+            <div class="mk-note">Vista previa aproximada. Meta ajusta el formato según el dispositivo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fsec" id="fsec-carousel"><div id="carousel-ads"></div><button class="add-ad" onclick="addMetaAd('carousel')">+ Agregar carrusel</button></div>
+    <div class="fsec" id="fsec-collection"><div id="collection-ads"></div><button class="add-ad" onclick="addMetaAd('collection')">+ Agregar anuncio Collection</button></div>
+  </div>
+
+  <!-- GOOGLE PAGE -->
+  <div class="pg" id="pg-google">
+    <div class="ph-plat">
+      <div class="plat-badge plat-g"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+      <div><div class="plat-title">Google Search Ads</div><div class="plat-sub">Responsive Search Ads — Brief de copy</div></div>
+    </div>
+    <div class="g-layout">
+      <div><div id="google-ads"></div><button class="add-ad" onclick="addGoogleAd()">+ Agregar anuncio Google Search</button></div>
+      <div class="mockup-col">
+        <div class="gm-wrap">
+          <div class="gm-title">Vista previa del anuncio</div>
+          <div class="gm-sbar"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> tu búsqueda aquí</div>
+          <div class="gm-ad">
+            <span class="gm-label">Patrocinado</span>
+            <div class="gm-url"><span id="gm-url">tusitio.com</span><span id="gm-paths" style="color:var(--text3)"></span></div>
+            <div class="gm-hl" id="gm-hl"><span class="ph">Headline 1 | Headline 2 | Headline 3</span></div>
+            <div class="gm-desc" id="gm-desc"><span class="ph">La descripción aparecerá aquí...</span></div>
+          </div>
+          <div class="gm-note">Google combina hasta 3 headlines y 2 descripciones según el contexto de búsqueda.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="field"><label>Notas adicionales <span class="hint">Instrucciones especiales, tono, referencias...</span></label><textarea id="notes" rows="3" placeholder="Ej: El tono debe ser cercano, usar imagen del producto rojo..."></textarea></div>
+  <div class="act-row">
+    <button class="btn-p" onclick="genSummary()">Generar resumen</button>
+    <button class="btn-b" onclick="sendEmail()">Enviar brief</button>
+    <button class="btn-s" onclick="copySummary()">Copiar texto</button>
+    <button class="btn-s" onclick="clearAll()">Limpiar</button>
+  </div>
+  <div class="sum-box" id="sum-box">
+    <div class="sum-hdr">
+      <span class="sum-title">Resumen generado</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="copy-toast" id="copy-toast">¡Copiado!</span>
+        <button class="copy-btn" onclick="copySummary()">Copiar texto</button>
+      </div>
+    </div>
+    <pre class="sum-pre" id="sum-content"></pre>
+  </div>
+</div>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+emailjs.init('1LI5Z1-dWeRJJ84v9');
+const C={static:0,video:0,carousel:0,collection:0,google:0};
+const IDS=[];
+let activeGN=1;
+
+const META_CTAS=[
+  'Más información','Comprar ahora','Registrarse','Descargar','Reservar',
+  'Contactarnos','Solicitar presupuesto','Ver más','Obtener oferta','Suscribirse',
+  'Enviar mensaje','Ver menú','Pedir ahora','Escuchar ahora','Jugar ahora'
+];
+
+function switchPlat(p,btn){
+  document.querySelectorAll('.ni').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('show'));
+  document.getElementById('pg-'+p).classList.add('show');
+}
+
+document.querySelectorAll('.ftab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.fsec').forEach(x=>x.classList.remove('show'));
+    t.classList.add('active');
+    document.getElementById('fsec-'+t.dataset.fmt).classList.add('show');
+  });
+});
+
+function gv(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+
+function getNaming(fmt,n,plat){
+  const cl=(gv('client-name').replace(/\s+/g,'')||'Anunciante').substring(0,12);
+  const obj=document.getElementById('campaign-obj').value||'NA';
+  const now=new Date();
+  const mm=String(now.getMonth()+1).padStart(2,'0');
+  const yy=String(now.getFullYear()).slice(2);
+  const num=String(n).padStart(2,'0');
+  const fm={static:'Static',video:'Video',carousel:'Carousel',collection:'Collection',gsa:'GSA'};
+  return plat==='google'?`${cl}_GSA_${obj}_${mm}${yy}_${num}`:`${cl}_${fm[fmt]}_${obj}_${mm}${yy}_${num}`;
+}
+
+function updateNaming(){
+  IDS.forEach(({fmt,n,plat})=>{
+    const el=document.getElementById(`nm-${plat}-${fmt}-${n}`);
+    if(el)el.textContent=getNaming(fmt,n,plat);
+  });
+}
+
+function getInitial(){
+  const v=gv('client-name');
+  return v?v.charAt(0).toUpperCase():'T';
+}
+
+function updateAvatars(){
+  const init=getInitial();
+  const name=gv('client-name')||'anunciante';
+  const nameTitle=name.charAt(0).toUpperCase()+name.slice(1);
+  ['static','video'].forEach(fmt=>{
+    ['ig-av','ig-un','ig-capun','fb-av','fb-nm'].forEach(cls=>{
+      const el=document.getElementById(`${cls}-${fmt}`);
+      if(!el)return;
+      if(cls==='ig-av'||cls==='fb-av')el.textContent=init;
+      else if(cls==='ig-un'||cls==='ig-capun')el.textContent=name.toLowerCase().replace(/\s+/g,'');
+      else if(cls==='fb-nm')el.textContent=nameTitle;
+    });
+  });
+}
+
+function updateMkUrl(){
+  const url=(gv('landing-url')||'tusitio.com').replace(/^https?:\/\//,'').split('/')[0];
+  ['static','video'].forEach(fmt=>{
+    const el=document.getElementById('fb-url-'+fmt);
+    if(el)el.textContent=url.toUpperCase();
+  });
+  const gm=document.getElementById('gm-url');if(gm)gm.textContent=url;
+}
+
+function setPlatTog(fmt,plat,btn){
+  btn.closest('.tog-row').querySelectorAll('.tog').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mk-'+fmt+'-ig').style.display=plat==='ig'?'block':'none';
+  document.getElementById('mk-'+fmt+'-fb').style.display=plat==='fb'?'block':'none';
+}
+
+function setSizeTog(fmt,size,btn){
+  btn.closest('.tog-row').querySelectorAll('.tog').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const isVid=fmt==='video';
+  const configs={
+    sq:{cls:'sq',lbl:isVid?'Video cuadrado':'Imagen cuadrada',dim:'1080 × 1080 px',icon:isVid?'▶️':'🖼️'},
+    st:{cls:'st',lbl:isVid?'Video Stories':'Imagen Stories',dim:'1080 × 1920 px',icon:isVid?'▶️':'🖼️'}
+  };
+  const cfg=configs[size];
+  const inner=`<div class="img-inner"><span style="font-size:22px">${cfg.icon}</span><span class="img-lbl">${cfg.lbl}</span><span class="img-dim">${cfg.dim}</span></div>`;
+  const igI=document.getElementById('igimg-'+fmt);if(igI){igI.className='img-box '+cfg.cls;igI.innerHTML=inner;}
+  const fbI=document.getElementById('fbimg-'+fmt);if(fbI){fbI.className='img-box '+(size==='st'?'sq':cfg.cls);fbI.innerHTML=inner;}
+  // hide/show caption for stories
+  const igW=document.getElementById('mk-'+fmt+'-ig');
+  if(igW){
+    const cap=igW.querySelector('.ig-cap');
+    const hl=igW.querySelector('[id^="ig-hl-"]');
+    const ctaBar=igW.querySelector('.ig-cta-bar');
+    const acts=igW.querySelector('.ig-actions');
+    if(size==='st'){
+      if(cap)cap.style.display='none';if(hl)hl.style.display='none';
+      if(ctaBar)ctaBar.style.marginTop='.5rem';
+    }else{
+      if(cap)cap.style.display='';if(hl)hl.style.display='';
+    }
+  }
+}
+
+function updateMetaMk(fmt,n){
+  const p=gv(`${fmt}-${n}-primary`),h=gv(`${fmt}-${n}-hl`);
+  const set=(id,val,ph)=>{const el=document.getElementById(id);if(!el)return;el.innerHTML=val?val:`<span class="ph">${ph}</span>`;};
+  set('ig-primary-'+fmt,p,'El texto principal aparecerá aquí...');
+  set('ig-hl-'+fmt,h,'');
+  if(!h){document.getElementById('ig-hl-'+fmt).innerHTML='<span class="ph" style="font-size:11px;font-weight:400">Headline...</span>';}
+  set('fb-primary-'+fmt,p,'El texto principal aparecerá aquí...');
+  const fbHl=document.getElementById('fb-hl-'+fmt);
+  if(fbHl)fbHl.innerHTML=h?`<span style="font-weight:700">${h}</span>`:'<span class="ph">Headline...</span>';
+  updateMkUrl();
+}
+
+function updateCtaMk(fmt,val){
+  const label=val||'Más información';
+  const igCta=document.getElementById('ig-cta-'+fmt);if(igCta)igCta.innerHTML=`<span>${label}</span>`;
+  const fbCta=document.getElementById('fb-cta-'+fmt);if(fbCta)fbCta.textContent=label;
+}
+
+function ctaSelectHtml(fmt,n){
+  const opts=META_CTAS.map(c=>`<option value="${c}">${c}</option>`).join('');
+  return `<div class="field"><label>Call to Action <span class="req">*</span></label><div class="fdesc">Botón de acción del anuncio. Aparece en el mockup en tiempo real.</div><select id="${fmt}-${n}-cta" data-req="1" onchange="updateCtaMk('${fmt}',this.value)"><option value="">Seleccionar CTA...</option>${opts}</select><div class="ferr" id="err-${fmt}-${n}-cta">Este campo es obligatorio.</div></div>`;
+}
+
+function setupCounter(el){
+  const max=parseInt(el.dataset.max),cid=el.dataset.counter;
+  if(!cid)return;
+  function upd(){
+    if(el.value.length>max)el.value=el.value.substring(0,max);
+    const len=el.value.length,sp=document.getElementById(cid);
+    if(!sp)return;
+    sp.textContent=len+' / '+max;
+    sp.className='counter '+(len>=max?'over':len>max*.85?'warn':'ok');
+  }
+  el.addEventListener('input',upd);
+  el.addEventListener('keydown',e=>{
+    if(el.value.length>=max&&e.key!=='Backspace'&&e.key!=='Delete'&&!e.metaKey&&!e.ctrlKey&&e.key.length===1)e.preventDefault();
+  });
+  upd();
+}
+
+function fld(id,label,desc,max,tag,ph,req,rows){
+  const cid=id+'-c';
+  const ctrl=tag==='ta'
+    ?`<textarea id="${id}" rows="${rows||3}" placeholder="${ph}" data-max="${max}" data-counter="${cid}"${req?' data-req="1"':''}></textarea>`
+    :`<input type="text" id="${id}" placeholder="${ph}" data-max="${max}" data-counter="${cid}"${req?' data-req="1"':''}>`;
+  return `<div class="field"><label>${label}${req?'<span class="req">*</span>':''} <span class="hint">Máx. ${max} car.</span><span class="counter ok" id="${cid}">0 / ${max}</span></label>${desc?`<div class="fdesc">${desc}</div>`:''}${ctrl}<div class="ferr" id="err-${id}">Este campo es obligatorio.</div></div>`;
+}
+
+function addMetaAd(fmt){
+  C[fmt]++;const n=C[fmt];
+  IDS.push({fmt,n,plat:'meta'});
+  const cont=document.getElementById(fmt+'-ads');
+  const block=document.createElement('div');block.className='ad-block';block.id=`${fmt}-ad-${n}`;
+  const isVid=fmt==='video',isStOr=fmt==='static'||isVid;
+  let h=`<div class="ad-hdr"><span class="ad-num">Anuncio #${n}</span>${n>1?`<button class="del-btn" onclick="document.getElementById('${fmt}-ad-${n}').remove()">Eliminar</button>`:''}</div>`;
+  h+=`<div class="naming"><span class="n-lbl">Naming</span><span class="n-val" id="nm-meta-${fmt}-${n}">${getNaming(fmt,n,'meta')}</span></div>`;
+  h+=`<div class="field"><label>Nombre descriptivo <span class="hint">Referencia interna</span></label><input type="text" id="${fmt}-${n}-name" placeholder="Ej: Verano promo..." oninput="updateNaming()"></div>`;
+  if(isStOr){
+    h+=`<div class="sh" style="margin-top:.5rem">Copy</div>`;
+    h+=fld(`${fmt}-${n}-primary`,'Texto principal','Aparece sobre el anuncio en el feed.',125,'ta','Escribe el copy principal del anuncio...',true);
+    h+=fld(`${fmt}-${n}-hl`,'Headline','Título del anuncio. Aparece debajo del creativo en negrita.',40,'tx','Ej: Descubre nuestra nueva colección',true);
+    h+=fld(`${fmt}-${n}-desc`,'Descripción','Texto secundario bajo el headline.',30,'tx','Ej: Envío gratis hoy',true);
+    h+=ctaSelectHtml(fmt,n);
+    h+=`<div class="sh">Creativos</div>`;
+    h+=`<div class="url-hint">Comparte los archivos desde <strong>Google Drive</strong>, <strong>Dropbox</strong> o <strong>WeTransfer</strong> con acceso abierto. Cada creativo puede tener su propia URL de destino.</div>`;
+    h+=`<div class="slots">
+      <div class="slot">
+        <div class="slot-lbl"><span class="sbadge">1:1</span>${isVid?'Video':'Imagen'} cuadrado — Feed</div>
+        <div class="fdesc" style="margin-bottom:5px">${isVid?'1080×1080 px — MP4/MOV':'1080×1080 px — JPG/PNG'}</div>
+        <input type="text" id="${fmt}-${n}-url-sq" placeholder="Link al creativo (Drive, Dropbox...)">
+        <div style="margin-top:6px"><input type="text" id="${fmt}-${n}-dest-sq" placeholder="URL de destino (opcional)"></div>
+      </div>
+      <div class="slot">
+        <div class="slot-lbl"><span class="sbadge">9:16</span>${isVid?'Video':'Imagen'} — Stories / Reels</div>
+        <div class="fdesc" style="margin-bottom:5px">${isVid?'1080×1920 px — MP4/MOV, máx. 60 seg':'1080×1920 px — JPG/PNG'}</div>
+        <input type="text" id="${fmt}-${n}-url-st" placeholder="Link al creativo (Drive, Dropbox...)">
+        <div style="margin-top:6px"><input type="text" id="${fmt}-${n}-dest-st" placeholder="URL de destino (opcional)"></div>
+      </div>
+    </div>`;
+  }else if(fmt==='carousel'){
+    h+=fld(`${fmt}-${n}-primary`,'Texto principal','Copy general del carrusel.',125,'ta','Texto que aparece sobre el carrusel...',true);
+    h+=`<div class="sh" style="margin-top:.5rem">Tarjetas</div><div id="${fmt}-${n}-cards"></div><button class="add-url" onclick="addCarouselCard('${fmt}-${n}-cards',${n},document.getElementById('${fmt}-${n}-cards').children.length+1)">+ Agregar tarjeta</button>`;
+  }else if(fmt==='collection'){
+    h+=fld(`${fmt}-${n}-primary`,'Texto principal','Copy que aparece sobre el anuncio Collection.',125,'ta','Texto principal del anuncio...',true);
+    h+=fld(`${fmt}-${n}-hl`,'Headline','Título del anuncio Collection.',40,'tx','Ej: Explora toda la colección',true);
+    h+=ctaSelectHtml(fmt,n);
+    h+=`<div class="sh">Creativo de portada</div>
+    <div class="slot-full">
+      <div class="slot-lbl"><span class="sbadge">Portada</span>Imagen o video principal</div>
+      <div class="fdesc" style="margin-bottom:5px">1200×628 px (1.91:1) o 1080×1080 px (1:1)</div>
+      <input type="text" id="${fmt}-${n}-url-cover" placeholder="Link al creativo">
+      <div style="margin-top:6px"><input type="text" id="${fmt}-${n}-dest-cover" placeholder="URL de destino (opcional)"></div>
+    </div>`;
+  }
+  block.innerHTML=h;cont.appendChild(block);
+  block.querySelectorAll('[data-counter]').forEach(setupCounter);
+  if(isStOr){
+    block.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',()=>updateMetaMk(fmt,n)));
+  }
+  if(fmt==='carousel'){addCarouselCard(`${fmt}-${n}-cards`,n,1);addCarouselCard(`${fmt}-${n}-cards`,n,2);}
+}
+
+function addCarouselCard(cid,adN,cardN){
+  const c=document.getElementById(cid);
+  const b=document.createElement('div');b.className='car-card';b.id=cid+'-c'+cardN;
+  const tId=`carousel-${adN}-c${cardN}-t`,dId=`carousel-${adN}-c${cardN}-d`;
+  b.innerHTML=`<div class="car-hdr">Tarjeta ${cardN}<button class="rm-btn" onclick="document.getElementById('${b.id}').remove()">×</button></div>
+    <div class="field"><label>Título <span class="hint">Máx. 40</span><span class="counter ok" id="${tId}-c">0 / 40</span></label><input type="text" id="${tId}" data-max="40" data-counter="${tId}-c" placeholder="Título de la tarjeta"></div>
+    <div class="field"><label>Descripción <span class="hint">Máx. 30</span><span class="counter ok" id="${dId}-c">0 / 30</span></label><input type="text" id="${dId}" data-max="30" data-counter="${dId}-c" placeholder="Descripción breve"></div>
+    <div class="field"><label>Link al creativo (1080×1080 px)</label><input type="text" id="carousel-${adN}-c${cardN}-url" placeholder="https://drive.google.com/..."></div>
+    <div class="field"><label>URL de destino <span class="hint">Opcional</span></label><input type="text" id="carousel-${adN}-c${cardN}-dest" placeholder="https://tusitio.com/producto"></div>`;
+  c.appendChild(b);b.querySelectorAll('[data-counter]').forEach(setupCounter);
+}
+
+function updateGMk(n){
+  const hls=[1,2,3].map(i=>gv(`g-${n}-hl${i}`)).filter(Boolean);
+  const ds=[1,2].map(i=>gv(`g-${n}-d${i}`)).filter(Boolean);
+  const url=(gv(`g-${n}-url`)||'tusitio.com').replace(/^https?:\/\//,'').split('/')[0];
+  const p1=gv(`g-${n}-p1`),p2=gv(`g-${n}-p2`);
+  document.getElementById('gm-hl').innerHTML=hls.length?`<span style="color:#1a0dab">${hls.join(' | ')}</span>`:'<span class="ph">Headline 1 | Headline 2 | Headline 3</span>';
+  document.getElementById('gm-desc').innerHTML=ds.length?`<span style="color:#4d5156">${ds.join(' ')}</span>`:'<span class="ph">La descripción aparecerá aquí...</span>';
+  document.getElementById('gm-url').textContent=url;
+  document.getElementById('gm-paths').textContent=[p1,p2].filter(Boolean).length?' › '+[p1,p2].filter(Boolean).join(' › '):'';
+}
+
+function addGoogleAd(){
+  C.google++;const n=C.google;activeGN=n;
+  IDS.push({fmt:'gsa',n,plat:'google'});
+  const cont=document.getElementById('google-ads');
+  const block=document.createElement('div');block.className='ad-block';block.id=`google-ad-${n}`;
+  let h=`<div class="ad-hdr"><span class="ad-num">Anuncio #${n}</span>${n>1?`<button class="del-btn" onclick="document.getElementById('google-ad-${n}').remove()">Eliminar</button>`:''}</div>`;
+  h+=`<div class="naming"><span class="n-lbl">Naming</span><span class="n-val" id="nm-google-gsa-${n}">${getNaming('gsa',n,'google')}</span></div>`;
+  h+=`<div class="field"><label>Nombre descriptivo</label><input type="text" id="g-${n}-name" placeholder="Ej: Marca genérico, Producto X..." oninput="updateNaming()"></div>`;
+  h+=`<div class="sh">URL</div>`;
+  h+=`<div class="field"><label>URL final <span class="req">*</span></label><div class="fdesc">La página de destino del anuncio.</div><input type="text" id="g-${n}-url" placeholder="https://tusitio.com/pagina" data-req="1"><div class="ferr" id="err-g-${n}-url">Este campo es obligatorio.</div></div>`;
+  h+=`<div class="fr2"><div class="field"><label>Path 1 <span class="hint">Máx. 15</span><span class="counter ok" id="g-${n}-p1-c">0 / 15</span></label><div class="fdesc">Ruta visible. Ej: zapatos</div><input type="text" id="g-${n}-p1" data-max="15" data-counter="g-${n}-p1-c" placeholder="zapatos"></div><div class="field"><label>Path 2 <span class="hint">Máx. 15</span><span class="counter ok" id="g-${n}-p2-c">0 / 15</span></label><div class="fdesc">Segunda ruta. Ej: ofertas</div><input type="text" id="g-${n}-p2" data-max="15" data-counter="g-${n}-p2-c" placeholder="ofertas"></div></div>`;
+  h+=`<div class="sh">Headlines <span style="font-size:11px;font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">— Google combina hasta 3 para el encabezado</span></div>`;
+  const hlD=['El titular principal. Debe incluir la palabra clave más importante.','Complementa el headline 1. Resalta un beneficio clave.','Cierre del encabezado. Diferenciador o llamada a la acción corta.'];
+  for(let i=1;i<=15;i++)h+=fld(`g-${n}-hl${i}`,`Headline ${i}`,i<=3?hlD[i-1]:'Headline adicional. Google lo usará según relevancia.',30,'tx',`Headline ${i}...`,i<=3);
+  h+=`<div class="sh">Descripciones <span style="font-size:11px;font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">— Google muestra hasta 2 simultáneamente</span></div>`;
+  const dD=['Descripción principal. Explica el beneficio o propuesta de valor.','Segunda descripción. Puede incluir un llamado a la acción o detalle adicional.'];
+  for(let i=1;i<=4;i++)h+=fld(`g-${n}-d${i}`,`Descripción ${i}`,i<=2?dD[i-1]:'Descripción adicional para más variantes.',90,'tx',`Descripción ${i}...`,i<=2);
+  h+=`<div class="sh">Callouts <span style="font-size:11px;font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">— Frases cortas que resaltan beneficios adicionales</span></div>`;
+  for(let i=1;i<=4;i++)h+=fld(`g-${n}-co${i}`,`Callout ${i}`,'Frase que destaca un atributo. Ej: Envío gratis, Garantía 1 año.',25,'tx','Ej: Envío gratis',false);
+  h+=`<div class="sh">Sitelinks <span style="font-size:11px;font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">— Links adicionales bajo el anuncio</span></div>`;
+  for(let i=1;i<=2;i++){
+    h+=`<div class="sl-block">
+      <div class="car-hdr" style="margin-bottom:.75rem">Sitelink ${i}</div>
+      ${fld(`g-${n}-sl${i}-t`,'Texto del link','Texto visible. Ej: Ofertas del día.',25,'tx','Ej: Ofertas del día',false)}
+      ${fld(`g-${n}-sl${i}-d1`,'Descripción línea 1','Ej: Hasta 50% de descuento.',35,'tx','Ej: Hasta 50% de descuento',false)}
+      ${fld(`g-${n}-sl${i}-d2`,'Descripción línea 2','Segunda línea descriptiva.',35,'tx','Ej: Solo por tiempo limitado',false)}
+      <div class="field"><label>URL del sitelink</label><input type="text" id="g-${n}-sl${i}-url" placeholder="https://tusitio.com/ofertas"></div>
+    </div>`;
+  }
+  h+=`<div class="sh">Número de teléfono <span style="font-size:11px;font-weight:400;color:var(--text3);text-transform:none;letter-spacing:0">— Extensión de llamada</span></div>`;
+  h+=`<div class="field"><label>Teléfono</label><div class="fdesc">Número para la extensión de llamada. Incluye código de país.</div><input type="text" id="g-${n}-phone" placeholder="Ej: +57 300 123 4567"></div>`;
+  block.innerHTML=h;cont.appendChild(block);
+  block.querySelectorAll('[data-counter]').forEach(setupCounter);
+  block.querySelectorAll('input,textarea').forEach(el=>{
+    el.addEventListener('focus',()=>{activeGN=n;updateGMk(n);});
+    el.addEventListener('input',()=>updateGMk(n));
+  });
+}
+
+function validate(){
+  let ok=true;
+  document.querySelectorAll('[data-req="1"]').forEach(el=>{
+    const e=document.getElementById('err-'+el.id);
+    if(!el.value.trim()){el.classList.add('invalid');if(e)e.classList.add('show');ok=false;}
+    else{el.classList.remove('invalid');if(e)e.classList.remove('show');}
+    el.addEventListener('input',()=>{if(el.value.trim()){el.classList.remove('invalid');const e2=document.getElementById('err-'+el.id);if(e2)e2.classList.remove('show');}},{once:false});
+  });
+  return ok;
+}
+
+function buildSummary(){
+  const cl=gv('client-name')||'--',ca=gv('campaign-name')||'--',la=gv('landing-url')||'--',no=gv('notes');
+  const obj=document.getElementById('campaign-obj').value;
+  const objs={Conv:'Conversión',Traf:'Tráfico',Aware:'Awareness',Lead:'Leads',Engagement:'Engagement',App:'App'};
+  const now=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
+  let L=[];
+  L.push('╔══════════════════════════════════════╗');
+  L.push('║      BRIEF DE CAMPAÑA DIGITAL        ║');
+  L.push('║         TOTBOX AGENCY                ║');
+  L.push('╚══════════════════════════════════════╝');
+  L.push('');
+  L.push(`📅  Fecha:     ${now}`);
+  L.push(`👤  Cliente:   ${cl}`);
+  L.push(`📋  Campaña:   ${ca}`);
+  L.push(`🎯  Objetivo:  ${objs[obj]||'--'}`);
+  L.push(`🔗  Landing:   ${la}`);
+
+  const mfmts=['static','video','carousel','collection'];
+  const mnames={static:'ESTÁTICO — Feed + Stories',video:'VIDEO — Feed + Stories',carousel:'CARRUSEL',collection:'COLLECTION'};
+  let mHas=false;
+  mfmts.forEach(f=>{document.querySelectorAll(`[id^="${f}-ad-"]`).forEach(b=>{const n=b.id.replace(f+'-ad-','');if(gv(`${f}-${n}-primary`))mHas=true;});});
+
+  if(mHas){
+    L.push('');L.push('┌──────────────────────────────────────┐');
+    L.push('│  📘  META ADS                        │');
+    L.push('└──────────────────────────────────────┘');
+    mfmts.forEach(fmt=>{
+      const blocks=document.querySelectorAll(`[id^="${fmt}-ad-"]`);if(!blocks.length)return;
+      let fHas=false;blocks.forEach(b=>{const n=b.id.replace(fmt+'-ad-','');if(gv(`${fmt}-${n}-primary`))fHas=true;});if(!fHas)return;
+      L.push('');L.push(`  ▸ ${mnames[fmt]}`);L.push('  ' + '─'.repeat(36));
+      blocks.forEach(b=>{
+        const n=b.id.replace(fmt+'-ad-','');
+        const nm=document.getElementById(`nm-meta-${fmt}-${n}`);
+        const name=gv(`${fmt}-${n}-name`)||'Anuncio #'+n;
+        const cta=gv(`${fmt}-${n}-cta`);
+        L.push('');L.push(`  📌 ${name}`);
+        L.push(`     🏷️  Naming:  ${nm?nm.textContent:'--'}`);
+        if(cta)L.push(`     👆  CTA:      ${cta}`);
+        L.push('');
+        if(fmt==='static'||fmt==='video'){
+          const p=gv(`${fmt}-${n}-primary`),h=gv(`${fmt}-${n}-hl`),d=gv(`${fmt}-${n}-desc`);
+          if(p){L.push('     📝  COPY PRINCIPAL');L.push(`         "${p}"`);}
+          if(h)L.push(`     📌  Headline (${h.length}/40):  ${h}`);
+          if(d)L.push(`     📄  Descripción (${d.length}/30):  ${d}`);
+          const sq=gv(`${fmt}-${n}-url-sq`),dsq=gv(`${fmt}-${n}-dest-sq`);
+          const st=gv(`${fmt}-${n}-url-st`),dst=gv(`${fmt}-${n}-dest-st`);
+          L.push('');L.push('     🖼️  CREATIVOS:');
+          if(sq){L.push(`         • 1:1 Feed:       ${sq}`);if(dsq)L.push(`           ↳ URL destino: ${dsq}`);}
+          if(st){L.push(`         • 9:16 Stories:   ${st}`);if(dst)L.push(`           ↳ URL destino: ${dst}`);}
+        }else if(fmt==='carousel'){
+          const p=gv(`${fmt}-${n}-primary`);
+          if(p){L.push('     📝  COPY PRINCIPAL');L.push(`         "${p}"`);}
+          const cc=document.getElementById(`${fmt}-${n}-cards`);
+          if(cc){
+            L.push('');L.push('     🃏  TARJETAS:');
+            cc.querySelectorAll('.car-card').forEach((card,ci)=>{
+              const t=card.querySelector(`[id$="-c${ci+1}-t"]`),d=card.querySelector(`[id$="-c${ci+1}-d"]`);
+              const u=card.querySelector(`[id$="-c${ci+1}-url"]`),dest=card.querySelector(`[id$="-c${ci+1}-dest"]`);
+              L.push(`         Tarjeta ${ci+1}:`);
+              if(t&&t.value.trim())L.push(`           • Título:      ${t.value.trim()}`);
+              if(d&&d.value.trim())L.push(`           • Desc:        ${d.value.trim()}`);
+              if(u&&u.value.trim())L.push(`           • Creativo:    ${u.value.trim()}`);
+              if(dest&&dest.value.trim())L.push(`           • URL destino: ${dest.value.trim()}`);
+            });
+          }
+        }else if(fmt==='collection'){
+          const p=gv(`${fmt}-${n}-primary`),h=gv(`${fmt}-${n}-hl`),cv=gv(`${fmt}-${n}-url-cover`),dcv=gv(`${fmt}-${n}-dest-cover`);
+          if(p){L.push('     📝  COPY PRINCIPAL');L.push(`         "${p}"`);}
+          if(h)L.push(`     📌  Headline: ${h}`);
+          if(cv){L.push('');L.push('     🖼️  PORTADA:');L.push(`         ${cv}`);if(dcv)L.push(`         ↳ URL destino: ${dcv}`);}
+        }
+      });
+    });
+  }
+
+  const gb=document.querySelectorAll('[id^="google-ad-"]');
+  if(gb.length){
+    let gHas=false;gb.forEach(b=>{const n=b.id.replace('google-ad-','');if(gv(`g-${n}-hl1`))gHas=true;});
+    if(gHas){
+      L.push('');L.push('┌──────────────────────────────────────┐');
+      L.push('│  🔍  GOOGLE SEARCH ADS               │');
+      L.push('└──────────────────────────────────────┘');
+      gb.forEach(b=>{
+        const n=b.id.replace('google-ad-','');
+        const nm=document.getElementById(`nm-google-gsa-${n}`);
+        const name=gv(`g-${n}-name`)||'Anuncio #'+n;
+        L.push('');L.push(`  📌 ${name}`);
+        L.push(`     🏷️  Naming: ${nm?nm.textContent:'--'}`);
+        const url=gv(`g-${n}-url`),p1=gv(`g-${n}-p1`),p2=gv(`g-${n}-p2`);
+        if(url)L.push(`     🔗  URL: ${url}`);
+        if(p1||p2)L.push(`     🌐  URL visible: ${url.replace(/^https?:\/\//,'').split('/')[0]}${p1?'/'+p1:''}${p2?'/'+p2:''}`);
+        L.push('');L.push('     📌  HEADLINES:');
+        for(let i=1;i<=15;i++){const v=gv(`g-${n}-hl${i}`);if(v)L.push(`         HL${String(i).padStart(2,'0')} (${v.length}/30): ${v}`);}
+        L.push('');L.push('     📄  DESCRIPCIONES:');
+        for(let i=1;i<=4;i++){const v=gv(`g-${n}-d${i}`);if(v)L.push(`         D${i} (${v.length}/90): ${v}`);}
+        const cos=[1,2,3,4].map(i=>gv(`g-${n}-co${i}`)).filter(Boolean);
+        if(cos.length){L.push('');L.push('     ✨  CALLOUTS:');cos.forEach(c=>L.push(`         • ${c}`));}
+        L.push('');L.push('     🔗  SITELINKS:');
+        for(let i=1;i<=2;i++){
+          const t=gv(`g-${n}-sl${i}-t`),u=gv(`g-${n}-sl${i}-url`);
+          if(t||u){
+            L.push(`         SL${i}: ${t}`);
+            const d1=gv(`g-${n}-sl${i}-d1`),d2=gv(`g-${n}-sl${i}-d2`);
+            if(d1)L.push(`               Desc 1: ${d1}`);
+            if(d2)L.push(`               Desc 2: ${d2}`);
+            if(u)L.push(`               URL: ${u}`);
+          }
+        }
+        const ph=gv(`g-${n}-phone`);if(ph){L.push('');L.push(`     📞  Teléfono: ${ph}`);}
+      });
+    }
+  }
+
+  if(no){L.push('');L.push('┌──────────────────────────────────────┐');L.push('│  📒  NOTAS ADICIONALES               │');L.push('└──────────────────────────────────────┘');L.push('');L.push(`  ${no}`);}
+  L.push('');L.push('╔══════════════════════════════════════╗');
+  L.push('║  © 2026 Totbox Agency                ║');
+  L.push('║  Todos los derechos reservados       ║');
+  L.push('╚══════════════════════════════════════╝');
+  return L.join('\n');
+}
+
+function genSummary(){
+  const t=buildSummary();
+  document.getElementById('sum-content').textContent=t;
+  document.getElementById('sum-box').classList.add('show');
+  document.getElementById('sum-box').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function copySummary(){
+  genSummary();
+  const t=document.getElementById('sum-content').textContent;
+  if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>{
+    const el=document.getElementById('copy-toast');el.style.display='inline';setTimeout(()=>el.style.display='none',2000);
+  });
+}
+function showToast(msg,type){
+  const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type||'');
+  setTimeout(()=>t.className='toast',4000);
+}
+function sendEmail(){
+  if(!validate()){showToast('Por favor completa los campos obligatorios.','err');return;}
+  const cl=gv('client-name');
+  showToast('Enviando brief...');
+  emailjs.send('service_chu06fi','template_oakto4o',{
+    from_name:cl,
+    campaign:gv('campaign-name')||'Sin nombre',
+    summary:buildSummary(),
+  }).then(()=>showToast('✓ Brief enviado a david@totboxagency.com','ok'),
+  e=>showToast('Error: '+(e.text||e.message||JSON.stringify(e)),'err'));
+}
+function clearAll(){
+  document.querySelectorAll('input[type=text],textarea').forEach(el=>el.value='');
+  document.getElementById('campaign-obj').value='';
+  IDS.length=0;
+  ['static','video','carousel','collection'].forEach(fmt=>{C[fmt]=0;const c=document.getElementById(fmt+'-ads');if(c)c.innerHTML='';addMetaAd(fmt);});
+  C.google=0;const gc=document.getElementById('google-ads');if(gc)gc.innerHTML='';addGoogleAd();
+  document.getElementById('sum-box').classList.remove('show');
+  document.querySelectorAll('[data-req]').forEach(el=>{el.classList.remove('invalid');const e=document.getElementById('err-'+el.id);if(e)e.classList.remove('show');});
+  updateMetaMk('static',1);updateMetaMk('video',1);updateAvatars();
+}
+['static','video','carousel','collection'].forEach(fmt=>addMetaAd(fmt));
+addGoogleAd();
+updateAvatars();
+</script>
+</body>
+</html>
